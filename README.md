@@ -18,3 +18,13 @@ pip3 install torch scikit-learn mendeleev rdkit-pypi
 ```
 python3 main.py <antigen.pdb>
 ```
+
+## Validation of epitope3D
+1. To run validation scripts, anbase repository is required:
+```
+git clone https://github.com/biocad/anbase.git
+```
+2. Run script:
+```
+sh validate.sh
+```

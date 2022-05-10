@@ -32,7 +32,7 @@ cat anbase-master/anbase_summary.csv | cut -d',' -f12 > new_names.txt
 cat anbase-master/anbase_summary.csv | cut -d'_' -f1 > old_names.txt
 paste old_names new_names > change.txt
 
-cat comparison.txt | while IFS=$'\t' read -r col1
+cat new_names.txt | while IFS=$'\t' read -r col1
 do
     cat change.txt | grep $col1 | cut -d' ' -f2 | awk '{print}' ORS=' ' >> ags.txt
     echo "\n" >> ags.txt
