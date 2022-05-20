@@ -14,7 +14,11 @@ mv Molformer/model ./model
 ```
 pip3 install torch scikit-learn mendeleev rdkit-pypi
 ``` 
-4. Launch code:
+4. Unzip model checkpoint:
+```
+gunzip model.ckpt.gz
+```
+5. Launch code:
 ```
 python3 main.py <antigen.pdb>
 ```
