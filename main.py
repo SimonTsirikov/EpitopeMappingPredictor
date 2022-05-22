@@ -38,7 +38,7 @@ if __name__ == '__main__':
         nn.Linear(64, 2)
     ).to(device)
 
-    checkpoint = torch.load('model.ckpt')
+    checkpoint = torch.load('model.ckpt', map_location=device)
     model.load_state_dict(checkpoint)
     model.eval()
 
