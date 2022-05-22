@@ -24,6 +24,7 @@ numbering = {'H': 0, 'C': 1, 'N': 2, 'O': 3, 'F': 4, 'P': 5, 'S': 6, 'K': 7}
 
 
 def parse_atom(line: str) -> List[str]:
+    """Parse one string according to .pdb format description"""
     tokens = list()
     tokens.append(line[4:11].lstrip())
     tokens.append(line[22:27].strip())
@@ -35,6 +36,7 @@ def parse_atom(line: str) -> List[str]:
 
 
 def read_file(name) -> List[Atom]:
+    """Extract data from .pdb file"""
     ag_atoms = list()
     with open(name) as f:
         for line in f:
@@ -47,6 +49,7 @@ def read_file(name) -> List[Atom]:
 
 
 def group_by_acid(molecule: List[Atom]) -> List[Acid]:
+    """Group molecules from the same acid into container"""
     acids = defaultdict(list)
     for atom in molecule:
         acids[atom.acid_id].append(atom)
@@ -54,16 +57,19 @@ def group_by_acid(molecule: List[Atom]) -> List[Acid]:
     return [Acid(acid_id, atoms) for acid_id, atoms in acids.items()]
 
 
-def fill_tree(molecule: List[Atom]) -> cKDTree:
-    return cKDTree([[atom.x, atom.y, atom.z] for atom in molecule])
+def fill_tree(molecule: List[Atom], leafsize) -> cKDTree:
+    """Build structure to get quicker access to data"""
+    return cKDTree([[atom.x, atom.y, atom.z] for atom in molecule], leafsize)
 
 
 def get_nearest(tree: cKDTree, acid: Acid, size: int = 64) -> List[int]:
+    """Extract the area of uniform size around acid"""
     _, indexes = tree.query([[atom.x, atom.y, atom.z] for atom in acid.atoms], size)
     return indexes[0]
 
 
 def prepare_transformer(atoms: List[Atom]) -> Tuple[List[Tuple[float, float, float]], List[int]]:
+    """Arrange the data in the input format of Molformer"""
     positions = list()
     numbers   = list()
     for atom in atoms:
